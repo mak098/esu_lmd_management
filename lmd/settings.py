@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'import_export',
     'authentication',
     'diploma',
+    'schooling',
     
 
 ]

@@ -28,7 +28,7 @@ class  Mission(models.Model):
     start_date = models.DateTimeField(verbose_name='Start date')
     end_date = models.DateTimeField(verbose_name='End date')
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL,null=True, blank=True,
-    on_delete=models.PROTECT,related_name='question_created_by' ,verbose_name='created by' )
+    on_delete=models.PROTECT,related_name='mission_created_by' ,verbose_name='created by' )
     status = models.CharField(max_length=20, blank=True,  default='waiting',
 		choices=(
 			('waiting', 'waiting'),
@@ -46,5 +46,16 @@ class  Mission(models.Model):
         verbose_name_plural = "Missions"
         db_table = "missions"
 
-class DistributionOfAgentsToSchools(models.Model):
-    school = models.ForeignKey(School,null=True, blank=True,on_delete=models.PROTECT,related_name='school_agent_order' ,verbose_name='school order' )
+class MissionConfiguration(models.Model):
+    school = models.ForeignKey(School,null=True, blank=True,on_delete=models.PROTECT,related_name='school_agent_order' ,verbose_name='school order')
+    agents = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True,verbose_name='Agents' )
+    configure_by = models.ForeignKey(settings.AUTH_USER_MODEL,null=True, blank=True,
+    on_delete=models.PROTECT,related_name='mission_configure_by' ,verbose_name='configure by' )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return f"{self.school.name}"
+    
+    class Meta:
+        verbose_name_plural = "Mission conf"
+        db_table = "mission_configurations"
