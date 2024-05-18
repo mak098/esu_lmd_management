@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from authentication.models import School
 class VerificationQuestions(models.Model):
-    question = models.CharField(max_length=30, blank=True, verbose_name='Question')
+    question = models.CharField(max_length=256, blank=True, verbose_name='Question')
     type = models.CharField(max_length=20, blank=True,  default='boolean',
 		choices=(
 			('boolean', 'boolean'),
@@ -47,7 +47,9 @@ class  Mission(models.Model):
         db_table = "missions"
 
 class MissionConfiguration(models.Model):
-    school = models.ForeignKey(School,null=True, blank=True,on_delete=models.PROTECT,related_name='school_agent_order' ,verbose_name='school order')
+    
+    mission = models.ForeignKey(Mission,null=True, blank=True,on_delete=models.PROTECT,related_name='mission_conf' ,verbose_name='Mission ')
+    school = models.ForeignKey(School,null=True, blank=True,on_delete=models.PROTECT,related_name='school_agent_conf' ,verbose_name='School')
     agents = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True,verbose_name='Agents' )
     configure_by = models.ForeignKey(settings.AUTH_USER_MODEL,null=True, blank=True,
     on_delete=models.PROTECT,related_name='mission_configure_by' ,verbose_name='configure by' )

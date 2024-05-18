@@ -35,7 +35,7 @@ class RoleAdmin(admin.ModelAdmin):
     list_display = ('name',)
     fields =('name',)
     search_fields = ('name',) 
-
+    
 @admin.register(SchoolGroup)
 class SchoolGroupAdmin(admin.ModelAdmin):
     list_display = ('name',)
