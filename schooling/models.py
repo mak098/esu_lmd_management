@@ -56,13 +56,15 @@ class MissionConfiguration(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
-        return f"{self.school.name}"
+        return f"{self.mission} :-> {self.school}"
     
     class Meta:
         verbose_name_plural = "Mission conf"
         db_table = "mission_configurations"
         
 class Finalist(models.Model):
+    mission_configuration = models.ForeignKey(MissionConfiguration,null=True, blank=True,
+        on_delete=models.PROTECT,related_name='mission_configurations' ,verbose_name='School' )
     registration_number = models.CharField(max_length=15,default='-',null=True, blank=True, verbose_name='Registration number')
     student_names = models.CharField(max_length=50,default='-',null=True, blank=True, verbose_name='Student names')
     place_of_birth = models.CharField(max_length=50,default='-',null=True, blank=True, verbose_name='place of birth')
@@ -93,7 +95,7 @@ class Finalist(models.Model):
         verbose_name='Status',
     )
     controller_by = models.ForeignKey(settings.AUTH_USER_MODEL,null=True, blank=True,
-    on_delete=models.PROTECT,related_name='finalist_controller_by' ,verbose_name='controller by' )
+        on_delete=models.PROTECT,related_name='finalist_controller_by' ,verbose_name='controller by' )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
@@ -108,7 +110,7 @@ class Controller(models.Model):
                 on_delete=models.PROTECT,related_name='controller_question',verbose_name='Question' )
     response = models.CharField(max_length=256,default='-',null=True, blank=True, verbose_name='Response')
     finalist = models.ForeignKey(Finalist, null=True, blank=True,
-                on_delete=models.PROTECT,related_name='controller_finalist',verbose_name='Question' )
+                on_delete=models.PROTECT,related_name='controller_finalist',verbose_name='Finalist' )
     controller_by = models.ForeignKey(settings.AUTH_USER_MODEL,null=True, blank=True,
                     on_delete=models.PROTECT,related_name='controller_by' ,verbose_name='controller by' )
     created_at = models.DateTimeField(auto_now_add=True)
