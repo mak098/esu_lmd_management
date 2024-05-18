@@ -61,3 +61,61 @@ class MissionConfiguration(models.Model):
     class Meta:
         verbose_name_plural = "Mission conf"
         db_table = "mission_configurations"
+        
+class Finalist(models.Model):
+    registration_number = models.CharField(max_length=15,default='-',null=True, blank=True, verbose_name='Registration number')
+    student_names = models.CharField(max_length=50,default='-',null=True, blank=True, verbose_name='Student names')
+    place_of_birth = models.CharField(max_length=50,default='-',null=True, blank=True, verbose_name='place of birth')
+    date_of_birth = models.CharField(max_length=50,default='-',null=True, blank=True, verbose_name='date of birth')
+    gender = models.CharField(max_length=20, blank=True,  default='Masculin',
+		choices=(
+			('Masculin', 'Masculin'),
+			('Femini', 'Femini')			
+		),
+        verbose_name='Gender',
+    )
+    level = models.CharField(max_length=20, blank=True,  default='LICENCE',
+		choices=(
+			('LICENCE', 'LICENCE'),
+			('MAITRISE', 'MAITRISE'),			
+			('DOCTORAT', 'DOCTORAT'),			
+			('BREVET', 'BREVET'),			
+		),
+        verbose_name='level',
+    )
+    faculty = models.CharField(max_length=256,default='-',null=True, blank=True, verbose_name='faculty')
+    option = models.CharField(max_length=256,default='-',null=True, blank=True, verbose_name='option')
+    status = models.CharField(max_length=20, blank=True,  default='waiting',
+		choices=(
+			('waiting', 'waiting'),
+			('order', 'order'),			
+		),
+        verbose_name='Status',
+    )
+    controller_by = models.ForeignKey(settings.AUTH_USER_MODEL,null=True, blank=True,
+    on_delete=models.PROTECT,related_name='finalist_controller_by' ,verbose_name='controller by' )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return f"{self.student_names}"
+    
+    class Meta:
+        verbose_name_plural = "Finalist"
+        db_table = "finalists"
+
+class Controller(models.Model):
+    question = models.ForeignKey(VerificationQuestions, null=True, blank=True,
+                on_delete=models.PROTECT,related_name='controller_question',verbose_name='Question' )
+    response = models.CharField(max_length=256,default='-',null=True, blank=True, verbose_name='Response')
+    finalist = models.ForeignKey(Finalist, null=True, blank=True,
+                on_delete=models.PROTECT,related_name='controller_finalist',verbose_name='Question' )
+    controller_by = models.ForeignKey(settings.AUTH_USER_MODEL,null=True, blank=True,
+                    on_delete=models.PROTECT,related_name='controller_by' ,verbose_name='controller by' )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    def __str__(self):
+        return f"{self.finalist.student_names}"
+    
+    class Meta:
+        verbose_name_plural = "Controllers"
+        db_table = "controllers"
