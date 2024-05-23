@@ -13,3 +13,4 @@ inflect==7.0.0
 qrcode ==7.4.2
 numpy==1.26.4
 qrcode-artistic
+django-tailwind==3.8.0

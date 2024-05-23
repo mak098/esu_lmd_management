@@ -19,10 +19,14 @@ from django.urls import path, include
 from django.conf import settings #add this
 from django.conf.urls.static import static #add this
 from django.conf.urls.i18n import i18n_patterns
-from authentication.views import home
+from authentication.views import home,signin,signout,index
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
-    path('', home),
+    path('', home,name='home'),
+    path('signin', signin,name='signin'),
+    path('signout', signout,name='signout'),
+    path('dashbord', index,name='dashbord'),
+    
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += i18n_patterns(path('admin/', admin.site.urls))
